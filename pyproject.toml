@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "herd-behavior-alerter"
+version = "0.1.0"
+description = "Detects potential herd behavior signals from market data"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.6",
+  "pydantic==1.10.17",
+  "python-dotenv==1.0.1"
+]
+
+[tool.setuptools]
+packages = ["herd_behavior_alerter"]
