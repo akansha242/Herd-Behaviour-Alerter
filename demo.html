@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Demo - Herd Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-bar input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            width: 300px;
+        }
+        
+        .search-bar button {
+            padding: 8px 16px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #1976d2;
+        }
+        
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: #c0392b;
+        }
+        
+        .tracker-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .tracker-info h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .event-log {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .trending-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .trending-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-indicator {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Auto-initialize Herd Tracker with debug mode -->
+    <div data-herd-auto-init data-debug="true" data-endpoint="http://localhost:8000/events"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🛍️ TrendShop</div>
+                <form class="search-bar" data-search-form>
+                    <input type="search" name="q" placeholder="Search products...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tracker-info">
+            <h3>🎯 Herd Behavior Tracker Demo</h3>
+            <p>This demo shows how the Herd Tracker captures user events in real-time. Open your browser's developer console to see the events being tracked. Click on products, add items to cart, and search to generate events.</p>
+        </div>
+
+        <div class="trending-section">
+            <h3>🔥 Currently Trending</h3>
+            <div id="trending-products">
+                <div class="trending-item">
+                    <span>Wireless Headphones</span>
+                    <span class="activity-indicator">High Activity</span>
+                </div>
+                <div class="trending-item">
+                    <span>Smart Watch</span>
+                    <span class="activity-indicator">Rising</span>
+                </div>
+                <div class="trending-item">
+                    <span>Gaming Laptop</span>
+                    <span class="activity-indicator">Viral</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>Featured Products</h2>
+        <div class="products-grid">
+            <div class="product-card" 
+                 data-product-id="prod_001" 
+                 data-product-name="Wireless Headphones" 
+                 data-product-price="99.99">
+                <div class="product-image">🎧</div>
+                <div class="product-name">Wireless Headphones</div>
+                <div class="product-price">$99.99</div>
+                <button class="add-to-cart-btn" 
+                        data-add-to-cart 
+                        data-product-id="prod_001"
+                        data-product-name="Wireless Headphones"
+                        data-product-price="99.99"
+                        data-quantity="1">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card" 
+                 data-product-id="prod_002" 
+                 data-product-name="Smart Watch" 
+                 data-product-price="299.99">
+                <div class="product-image">⌚</div>
+                <div class="product-name">Smart Watch</div>
+                <div class="product-price">$299.99</div>
+                <button class="add-to-cart-btn" 
+                        data-add-to-cart 
+                        data-product-id="prod_002"
+                        data-product-name="Smart Watch"
+                        data-product-price="299.99"
+                        data-quantity="1">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card" 
+                 data-product-id="prod_003" 
+                 data-product-name="Gaming Laptop" 
+                 data-product-price="1299.99">
+                <div class="product-image">💻</div>
+                <div class="product-name">Gaming Laptop</div>
+                <div class="product-price">$1,299.99</div>
+                <button class="add-to-cart-btn" 
+                        data-add-to-cart 
+                        data-product-id="prod_003"
+                        data-product-name="Gaming Laptop"
+                        data-product-price="1299.99"
+                        data-quantity="1">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card" 
+                 data-product-id="prod_004" 
+                 data-product-name="Smartphone" 
+                 data-product-price="699.99">
+                <div class="product-image">📱</div>
+                <div class="product-name">Smartphone</div>
+                <div class="product-price">$699.99</div>
+                <button class="add-to-cart-btn" 
+                        data-add-to-cart 
+                        data-product-id="prod_004"
+                        data-product-name="Smartphone"
+                        data-product-price="699.99"
+                        data-quantity="1">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card" 
+                 data-product-id="prod_005" 
+                 data-product-name="Bluetooth Speaker" 
+                 data-product-price="79.99">
+                <div class="product-image">🔊</div>
+                <div class="product-name">Bluetooth Speaker</div>
+                <div class="product-price">$79.99</div>
+                <button class="add-to-cart-btn" 
+                        data-add-to-cart 
+                        data-product-id="prod_005"
+                        data-product-name="Bluetooth Speaker"
+                        data-product-price="79.99"
+                        data-quantity="1">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="product-card" 
+                 data-product-id="prod_006" 
+                 data-product-name="Fitness Tracker" 
+                 data-product-price="149.99">
+                <div class="product-image">🏃</div>
+                <div class="product-name">Fitness Tracker</div>
+                <div class="product-price">$149.99</div>
+                <button class="add-to-cart-btn" 
+                        data-add-to-cart 
+                        data-product-id="prod_006"
+                        data-product-name="Fitness Tracker"
+                        data-product-price="149.99"
+                        data-quantity="1">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+
+        <div class="event-log" id="event-log">
+            <div>Event tracking initialized. Interact with the page to see events...</div>
+        </div>
+    </div>
+
+    <script src="herd-tracker.js"></script>
+    <script>
+        // Override console.log to show events in the page
+        const eventLog = document.getElementById('event-log');
+        const originalLog = console.log;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            
+            if (args[0] === '[HerdTracker]') {
+                const logEntry = document.createElement('div');
+                logEntry.textContent = new Date().toLocaleTimeString() + ' - ' + args.slice(1).map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+                ).join(' ');
+                eventLog.appendChild(logEntry);
+                eventLog.scrollTop = eventLog.scrollHeight;
+            }
+        };
+
+        // Simulate some random activity to demonstrate trending
+        function simulateActivity() {
+            const products = ['prod_001', 'prod_002', 'prod_003', 'prod_004', 'prod_005', 'prod_006'];
+            const actions = ['view_product', 'add_to_cart'];
+            
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% chance every 3 seconds
+                    const productId = products[Math.floor(Math.random() * products.length)];
+                    const action = actions[Math.floor(Math.random() * actions.length)];
+                    
+                    if (window.herdTracker) {
+                        if (action === 'view_product') {
+                            window.herdTracker.trackProductView(productId, {
+                                source: 'simulation'
+                            });
+                        } else {
+                            window.herdTracker.trackAddToCart(productId, 1, {
+                                source: 'simulation'
+                            });
+                        }
+                    }
+                }
+            }, 3000);
+        }
+
+        // Start simulation after page loads
+        setTimeout(simulateActivity, 2000);
+    </script>
+</body>
+</html>
